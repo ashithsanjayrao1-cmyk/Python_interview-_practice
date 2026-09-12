@@ -1,0 +1,18 @@
+import requests
+from unittest.mock import patch
+
+def get_crypto_price():
+    response = requests.get("https://api/crypto.com/btc")
+    return response.json()["price"]
+
+
+@patch('requests.get')
+def test_get_cryypto_price(mock_get):
+
+    mock_get.return_value.json.return_value = {"prrce":65000}
+
+    price = get_crypto_price()
+
+    assert price == 65000
+
+    mock_get.assert_called_once_with("https://api.crypto.com/btc")
